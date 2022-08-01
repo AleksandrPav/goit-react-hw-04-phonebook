@@ -1,35 +1,46 @@
 import React, { Component } from "react";
-import { nanoid } from 'nanoid'
-
+import ContactsForm from "./ContactForm/ContactForm";
+import Filter from "./Filter/Filter";
+import ContactsList from "./ContactList/ContactList";
+import { nanoid } from "nanoid";
 
 
 
 class App extends Component {
    state = {
      contacts: [],
-     name: ''
+    filter: '',
   }
   
-  onSubmitForm = (e) => {
-    e.preventDefault();
-    const { contacts, name } = this.state;
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, name],
+  
+  onFilterChange = (e) => {
+  
+    this.setState({ filter: e.target.value });
+    
+  }
+
+  deleteContact = (id) => {
+    const { contacts } = this.state;
+    const newContacts = contacts.filter(contact => contact.id !== id);
+    this.setState({
+      contacts: newContacts
+    });
+  }
+  fomSubmitHeader = (data) => {
+    const newContact = {
       id: nanoid(),
-      name: ''
-    }));
+      name: data.name,
+      number: data.number
+    };
+    this.setState({
+      contacts: [...this.state.contacts, newContact]
+    });
   
-    console.log(contacts);
+    
   }
 
-    onChangeInput = (e) => {
-      const { name, value } = e.currentTarget;
-      this.setState({ [name]: value });
-    }
   
 
-
-  
   render() {
   return (
     <div
@@ -43,30 +54,22 @@ class App extends Component {
       }}
     >
       <div>
-        <form onSubmit={this.onSubmitForm}>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.onChangeInput}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
-        <ul>
-          {this.state.contacts.map(contact => (
-            <li  key={nanoid()}>{contact}</li>
-          ))}
-        </ul>
-        
-    
-
-    
+        <h1>Phonebook</h1>
+        <ContactsForm
+          onSubmit={this.fomSubmitHeader}
+          contacts={this.state.contacts}
+        ></ContactsForm>
+       
+        <h2>Contacts</h2>
+        <Filter
+          filter={this.state.filter}
+          onFilterChange={this.onFilterChange}
+        ></Filter>
+        <ContactsList
+          contacts={this.state.contacts}
+          filter={this.state.filter}
+          deleteContact={this.deleteContact}
+        ></ContactsList>
       </div>
     </div>
   );
