@@ -1,13 +1,14 @@
 import React from "react";
+import css from "./Filter.module.css";
 
 
 const Filter = ({ filter, onFilterChange }) => {
     
     return (
-        <div>
-        <label>
+        <div className={css.filter}>
+        <label className={css.filter__label}>
             Filter by name:
-            <input type="text" value={filter} onChange={onFilterChange} />
+                <input className={css.filter__input }type="text" value={filter} onChange={onFilterChange} />
         </label>
         </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import css from "./ContactsForm.module.css";
 
 
 
@@ -8,38 +9,26 @@ class ContactsForm extends Component {
         number: ""
     }
    
-
-
     onSubmitForm = (e) => {
         e.preventDefault();
         this.props.onSubmit(this.state);
+        this.findDuble();
         this.resetForm();
-        this.findDuplicate();
-    
     }
 
- 
-    findDuplicate = (name) => {
-        const { contacts } = this.props;
-        const duplicate = contacts.find(contact => contact.name === name);
-        if (duplicate) {
-            alert(`${name} is already in contacts`);
-        }
+    findDuble = () => {
+       if (this.props.contacts.find(contact => contact.name === this.state.name && contact.number === this.state.number)) {
+           alert(`${this.state.name} is already exists`);
+           this.props.deleteContact(this.state.name);
+       }      
     }
-
-
-
-
-
    
      resetForm = () => {
         this.setState({
-            
             name: "",
             number: ""
         })
     }
-
 
     onChangeInput = (e) => {
         const { name, value } = e.currentTarget;
@@ -48,10 +37,12 @@ class ContactsForm extends Component {
     
     render() {
         return (
+            <div className={css.form__contact}>
             <form onSubmit={this.onSubmitForm}>
-                <div>
-                    <label>Name:</label>
-                    <input
+                <div className={css.form__item}>
+                    <label className={css.form__label}>Name:</label>
+                        <input
+                        className={css.form__input}
                         type="text"
                         name="name"
                         value={this.state.name}
@@ -61,9 +52,10 @@ class ContactsForm extends Component {
                         required
                     />
                 </div>
-                <div>
-                    <label>Number:</label>
-                    <input
+                <div className={css.form__item}>
+                    <label className={css.form__label}>Number:</label>
+                        <input
+                        className={css.form__input}
                         type="text"
                         name="number"
                         value={this.state.number}
@@ -73,10 +65,11 @@ class ContactsForm extends Component {
                         required
                     />
                 </div>
-                <div>
-                    <button type="submit">Add contact</button>
-                </div>
-            </form>
+               
+                    <button className={css.form__btnAdd} type="submit">Add contact</button>
+               
+                </form>
+            </div>
         );
     }
 }
