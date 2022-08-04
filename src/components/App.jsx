@@ -3,6 +3,7 @@ import ContactsForm from "./ContactForm/ContactForm";
 import Filter from "./Filter/Filter";
 import ContactsList from "./ContactList/ContactList";
 import { nanoid } from "nanoid";
+import css from "./App.module.css";
 
 
 
@@ -52,67 +53,25 @@ class App extends Component {
 
   render() {
   return (
-    <div
-      style={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101',
-        background: "radial-gradient(#edf1cf, #43acb4)",
-        paddingTop: '50px',
-        paddingBottom: '50px',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          maxWidth: '600px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'linear-gradient(45deg, #37ecba, #72afd3)',
-          padding: '20px',
-          borderRadius: '50px',
-          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
-      }}>
-        <h1
-          style={{
-            fontSize: '50px',
-            color: 'rgb(41, 67, 62)',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-            textAlign: 'center',
-            borderBottom: '2px solid rgb(41, 67, 62)',
-          }}>Phonebook</h1>
+    <div className={css.container}>
+      <div className={css.header}>
+        <h1 className={css.title}>Phonebook</h1>
         <ContactsForm
           onSubmit={this.fomSubmitHeader}
           contacts={this.state.contacts}
           deleteContact={this.deleteContact}
-        ></ContactsForm>
+        />
        
-        <h2
-          style={{
-            fontSize: '50px',
-            color: 'rgb(41, 67, 62)',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-            textAlign: 'center',
-            borderBottom: '2px solid rgb(41, 67, 62)',
-          }}
-        >Contacts</h2>
+        <h2 className={css.title}>Contacts</h2>
         <Filter
           filter={this.state.filter}
           onFilterChange={this.onFilterChange}
-        ></Filter>
+        />
         <ContactsList
           contacts={this.state.contacts}
           filter={this.state.filter}
           deleteContact={this.deleteContact}
-        ></ContactsList>
+       />
       </div>
     </div>
   );
