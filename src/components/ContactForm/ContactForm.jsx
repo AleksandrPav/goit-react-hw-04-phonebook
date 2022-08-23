@@ -1,52 +1,41 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import css from "./ContactsForm.module.css";
 
+const ContactsForm = ({ onSubmit, contacts, deleteContact }) => {
+    const [name, setName] = useState("");
+    const [number, setNumber] = useState("");
 
-
-class ContactsForm extends Component {
-    state = {
-        name: "",
-        number: ""
-    }
-   
-    onSubmitForm = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        this.props.onSubmit(this.state);
-        this.findDuble();
-        this.resetForm();
+        onSubmit({ name, number });
+        findDuble();
+        setName("");
+        setNumber("");
     }
 
-    findDuble = () => {
-       if (this.props.contacts.find(contact => contact.name === this.state.name && contact.number === this.state.number)) {
-           alert(`${this.state.name} is already exists`);
-           this.props.deleteContact(this.state.name);
-       }      
-    }
-   
-     resetForm = () => {
-        this.setState({
-            name: "",
-            number: ""
-        })
+    const findDuble = () => {
+        if (contacts.find(contact => contact.name === name && contact.number === number)) {
+            alert(`${name} is already exists`);
+            deleteContact(name);
+        }
     }
 
-    onChangeInput = (e) => {
-        const { name, value } = e.currentTarget;
-        this.setState({ [name]: value });
+    const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    name === "name" ? setName(value) : setNumber(value);
     }
-    
-    render() {
-        return (
+
+    return (
             <div className={css.form__contact}>
-            <form onSubmit={this.onSubmitForm}>
+            <form onSubmit={handleSubmit}>
                 <div className={css.form__item}>
                     <label className={css.form__label}>Name:</label>
                         <input
                         className={css.form__input}
                         type="text"
                         name="name"
-                        value={this.state.name}
-                        onChange={this.onChangeInput}
+                        value={name}
+                        onChange={onChangeInput}
                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                         itle="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                         required
@@ -58,8 +47,8 @@ class ContactsForm extends Component {
                         className={css.form__input}
                         type="text"
                         name="number"
-                        value={this.state.number}
-                        onChange={this.onChangeInput}
+                        value={number}
+                        onChange={onChangeInput}
                         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                         required
@@ -71,7 +60,7 @@ class ContactsForm extends Component {
                 </form>
             </div>
         );
-    }
 }
 
 export default ContactsForm;
+
